@@ -41,7 +41,7 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
 GLfloat RadiusOfBall = 15.;
 // Draw the ball, centered at the origin
 void draw_ball() {
-    glColor3f(0.6,0.3,0.);
+    glColor3f(0.6,0.0,0.7);
     MyCircle2f(0.,0.,RadiusOfBall);
 }
 
@@ -55,13 +55,13 @@ void Display(void)
     // 160 is max X value in our world
     // Define X position of the ball to be at center of window
     xpos = 80.;
- 	
+
     // Shape has hit the ground! Stop moving and start squashing down and then back up
-    if (ypos == RadiusOfBall && ydir == -1  ) {
+    if (ypos == RadiusOfBall && ydir == -1) {
         sy = sy*squash ;
 		
         if (sy < 0.8)
-            // reached maximum suqash, now unsquash back up
+            // reached maximum squash, now unsquash back up
             squash = 1.1;
         else if (sy > 1.) {
             // reset squash parameters and bounce ball back upwards
@@ -136,12 +136,11 @@ void reshape (int w, int h)
 
 void init(void){
     //set the clear color to be white
-    glClearColor(0.0,0.8,0.0,1.0);
+    glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
     // initial position set to 0,0
     xpos = 60; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
-
 }
 
 
