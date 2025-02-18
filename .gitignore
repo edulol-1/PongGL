@@ -1,5 +1,6 @@
 # Emacs y vim
 *.*~
+*.swp
 
 # Binarios
 *.out
