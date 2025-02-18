@@ -1,4 +1,4 @@
-//Example2_4.cpp : A bouncing balls
+//Example2_4.cpp : A bouncing ball
 
 //#include <windows.h> //the windows include file, required by all windows applications
 #include <GL/glut.h> //the glut file for windows operations
