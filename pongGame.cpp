@@ -31,14 +31,14 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
     GLint i;
     GLdouble angle;
     glBegin(GL_POLYGON);
-        for (i = 0; i < circle_points; i++) {
+    for (i = 0; i < circle_points; i++) {
         angle = 2*PI*i/circle_points;
         glVertex2f(centerx+radius*cos(angle), centery+radius*sin(angle));
     }
     glEnd();
 }
 
-GLfloat RadiusOfBall = 15.;
+GLfloat RadiusOfBall = 13.;
 // Draw the ball, centered at the origin
 void draw_ball() {
     glColor3f(0.6,0.0,0.7);
