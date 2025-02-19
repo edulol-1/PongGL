@@ -1,6 +1,6 @@
-# Implementacion de un juego de pong usando OPenGL.
+# Implementación de un juego de pong usando OpenGL.
 
-Practica de la materia de Diseño y Programación de Videojuegos.
+Práctica de la materia de Diseño y Programación de Videojuegos.
 
 OpenGL installation:
 ```
