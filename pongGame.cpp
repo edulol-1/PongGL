@@ -146,13 +146,21 @@ void init(void){
 
 int main(int argc, char* argv[])
 {
+    // Initialize the GLUT library and process any comand line arguments.
     glutInit( & argc, argv );
+    // with GLUT_DOUBLE we enable double buffering, i.e. smooth animation.
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    // Set the initial window size to 320 x 240 pixels.
     glutInitWindowSize (320, 240);
     glutCreateWindow("Example");
+    // Set up the initial OpenGL state.
     init();
+    // Register the display callback function to render the scene.
     glutDisplayFunc(Display);
+    // Register the reshape callback function to handle window resizing.
     glutReshapeFunc(reshape);
+    // Enter the GLUT event processing loop.
+    // Won't return until the program is finished.
     glutMainLoop();
 
     return 1;
