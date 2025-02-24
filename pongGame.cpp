@@ -47,7 +47,7 @@ void draw_ball() {
 
 void Display(void)
 {
-    // swap the buffers
+    // swap the font and back buffers (double buffering)
     glutSwapBuffers();
 
     //clear all pixels with the specified clear color
@@ -58,8 +58,8 @@ void Display(void)
 
     // Shape has hit the ground! Stop moving and start squashing down and then back up
     if (ypos == RadiusOfBall && ydir == -1) {
-        sy = sy*squash ;
-		
+        sy = sy * squash;
+
         if (sy < 0.8)
             // reached maximum squash, now unsquash back up
             squash = 1.1;
@@ -133,7 +133,6 @@ void reshape (int w, int h)
     glLoadIdentity ();
 }
 
-
 void init(void){
     //set the clear color to be white
     glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
@@ -142,7 +141,6 @@ void init(void){
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
 }
-
 
 int main(int argc, char* argv[])
 {
