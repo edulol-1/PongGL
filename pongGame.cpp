@@ -54,7 +54,7 @@ void Display(void)
     glClear(GL_COLOR_BUFFER_BIT);
     // 160 is max X value in our world
     // Define X position of the ball to be at center of window
-    xpos = 80.;
+    // xpos = 80.;
 
     // Shape has hit the ground! Stop moving and start squashing down and then back up
     if (ypos == RadiusOfBall && ydir == -1) {
@@ -81,6 +81,17 @@ void Display(void)
 	// If ball touches the bottom, change direction of ball upwards
         else if (ypos < RadiusOfBall)
             ydir = 1;
+    }
+
+    xpos = xpos + xdir * 0.5 - (1.0 - sx) * RadiusOfBall;
+
+    // Left wall collision
+    if (xpos <= RadiusOfBall) {
+        xdir = 1;
+    }
+    // Right wall collision
+    if (xpos >= 160 - RadiusOfBall) {
+        xdir = -1;
     }
 
     /*  //reset transformation state
