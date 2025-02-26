@@ -59,6 +59,22 @@ void drawLeftPaddle() {
     glEnd();
 }
 
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+        case 'w': // Move the paddle upwards
+            paddleYpos += paddleSpeed;
+            if (paddleYpos + 50.0 > windowHeight)
+                paddleYpos = windowHeight - 50;
+            break;
+        case 's':
+            paddleYpos -= paddleSpeed;
+            if (paddleYpos < 0.0)
+                paddleYpos = 0.0;
+            break;
+    }
+    glutPostRedisplay();
+}
+
 void Display(void)
 {
     // swap the font and back buffers (double buffering)
