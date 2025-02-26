@@ -56,43 +56,20 @@ void Display(void)
     // Define X position of the ball to be at center of window
     // xpos = 80.;
 
-    // Shape has hit the ground! Stop moving and start squashing down and then back up
-    if (ypos == RadiusOfBall && ydir == -1) {
-        sy = sy * squash;
+    ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
+    if (ypos == 120 - RadiusOfBall)
+        ydir = -1;
 
-        if (sy < 0.8)
-            // reached maximum squash, now unsquash back up
-            squash = 1.1;
-        else if (sy > 1.) {
-            // reset squash parameters and bounce ball back upwards
-            sy = 1.;
-            squash = 0.9;
-            ydir = 1;
-        }
-        sx = 1./sy;
-    }
-    // 120 is max Y value in our world
-    // set Y position to increment 1.5 times the direction of the bounce
-    else {
-	ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
-	// If ball touches the top, change direction of ball downwards
-        if (ypos == 120 - RadiusOfBall)
-            ydir = -1;
-	// If ball touches the bottom, change direction of ball upwards
-        else if (ypos < RadiusOfBall)
-            ydir = 1;
-    }
+    else if (ypos < RadiusOfBall)
+        ydir = 1;
 
     xpos = xpos + xdir * 0.5 - (1.0 - sx) * RadiusOfBall;
-
     // Left wall collision
-    if (xpos <= RadiusOfBall) {
+    if (xpos < RadiusOfBall)
         xdir = 1;
-    }
     // Right wall collision
-    if (xpos >= 160 - RadiusOfBall) {
+    else if (xpos == 160 - RadiusOfBall)
         xdir = -1;
-    }
 
     /*  //reset transformation state
         glLoadIdentity();
