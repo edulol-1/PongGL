@@ -12,6 +12,8 @@ double xpos, ypos, ydir, xdir;         // x and y position for house to be drawn
 double sx, sy, squash;          // xy scale factors
 double rot, rdir;             // rotation
 int SPEED = 50;        // speed of timer call back in msecs
+double windowWidth, windowHeight;
+
 GLfloat T1[16] = {1.,0.,0.,0.,\
                   0.,1.,0.,0.,\
                   0.,0.,1.,0.,\
@@ -57,7 +59,7 @@ void Display(void)
     // xpos = 80.;
 
     ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
-    if (ypos == 120 - RadiusOfBall)
+    if (ypos == windowHeight - RadiusOfBall)
         ydir = -1;
 
     else if (ypos < RadiusOfBall)
@@ -68,7 +70,7 @@ void Display(void)
     if (xpos < RadiusOfBall)
         xdir = 1;
     // Right wall collision
-    else if (xpos == 160 - RadiusOfBall)
+    else if (xpos == windowWidth - RadiusOfBall)
         xdir = -1;
 
     /*  //reset transformation state
@@ -116,7 +118,7 @@ void reshape (int w, int h)
     glLoadIdentity ();
 
     // keep our logical coordinate system constant
-    gluOrtho2D(0.0, 160.0, 0.0, 120.0);
+    gluOrtho2D(0.0, windowWidth, 0.0, windowHeight);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity ();
 }
@@ -125,7 +127,9 @@ void init(void){
     //set the clear color to be white
     glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
     // initial position set to 0,0
-    xpos = 60; ypos = RadiusOfBall; xdir = 1; ydir = 1;
+    windowHeight = 120.0;
+    windowWidth = 160.0;
+    xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
 }
