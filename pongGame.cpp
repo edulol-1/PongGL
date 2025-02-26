@@ -40,7 +40,7 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
     glEnd();
 }
 
-GLfloat RadiusOfBall = 13.;
+GLfloat RadiusOfBall = 5.;
 // Draw the ball, centered at the origin
 void draw_ball() {
     glColor3f(0.6,0.0,0.7);
@@ -55,8 +55,6 @@ void Display(void)
     //clear all pixels with the specified clear color
     glClear(GL_COLOR_BUFFER_BIT);
     // 160 is max X value in our world
-    // Define X position of the ball to be at center of window
-    // xpos = 80.;
 
     ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
     if (ypos == windowHeight - RadiusOfBall)
@@ -127,7 +125,7 @@ void init(void){
     //set the clear color to be white
     glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
     // initial position set to 0,0
-    windowHeight = 120.0;
+    windowHeight = 200.0;
     windowWidth = 160.0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
@@ -141,7 +139,7 @@ int main(int argc, char* argv[])
     // with GLUT_DOUBLE we enable double buffering, i.e. smooth animation.
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     // Set the initial window size to 320 x 240 pixels.
-    glutInitWindowSize (320, 240);
+    glutInitWindowSize (420, 640);
     glutCreateWindow("Example");
     // Set up the initial OpenGL state.
     init();
