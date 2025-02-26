@@ -57,19 +57,14 @@ void Display(void)
     // 160 is max X value in our world
 
     ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
-    if (ypos == windowHeight - RadiusOfBall)
-        ydir = -1;
-
-    else if (ypos < RadiusOfBall)
-        ydir = 1;
-
     xpos = xpos + xdir * 0.5 - (1.0 - sx) * RadiusOfBall;
+
+    if (ypos == windowHeight - RadiusOfBall || ypos < RadiusOfBall)
+        ydir *= -1;
+
     // Left wall collision
-    if (xpos < RadiusOfBall)
-        xdir = 1;
-    // Right wall collision
-    else if (xpos == windowWidth - RadiusOfBall)
-        xdir = -1;
+    if (xpos < RadiusOfBall || xpos == windowWidth - RadiusOfBall)
+        xdir *= -1;
 
     /*  //reset transformation state
         glLoadIdentity();
