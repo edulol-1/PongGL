@@ -47,6 +47,16 @@ void draw_ball() {
     MyCircle2f(0.,0.,RadiusOfBall);
 }
 
+void drawLeftPaddle() {
+    glColor3f(0.0, 0.0, 0.0);
+    glBegin(GL_POLYGON);
+    glVertex2f(0.0, 100.0);
+    glVertex2f(5.0, 100.0);
+    glVertex2f(5.0, 50.0);
+    glVertex2f(0.0, 50.0);
+    glEnd();
+}
+
 void Display(void)
 {
     // swap the font and back buffers (double buffering)
@@ -101,7 +111,6 @@ void Display(void)
     draw_ball();
     glutPostRedisplay();
 }
-
 
 void reshape (int w, int h)
 {
