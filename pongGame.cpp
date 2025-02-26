@@ -13,6 +13,8 @@ double sx, sy, squash;          // xy scale factors
 double rot, rdir;             // rotation
 int SPEED = 50;        // speed of timer call back in msecs
 double windowWidth, windowHeight;
+double paddleWidth, paddleHeight;
+double paddleXpos, paddleYpos;
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
                   0.,1.,0.,0.,\
@@ -50,10 +52,10 @@ void draw_ball() {
 void drawLeftPaddle() {
     glColor3f(0.0, 0.0, 0.0);
     glBegin(GL_POLYGON);
-    glVertex2f(0.0, 100.0);
-    glVertex2f(5.0, 100.0);
-    glVertex2f(5.0, 50.0);
-    glVertex2f(0.0, 50.0);
+    glVertex2f(0.0, paddleYpos);
+    glVertex2f(paddleWidth, paddleYpos);
+    glVertex2f(paddleWidth, paddleYpos + 30.0);
+    glVertex2f(0.0, paddleYpos + 30.0);
     glEnd();
 }
 
@@ -76,6 +78,7 @@ void Display(void)
     if (xpos < RadiusOfBall || xpos == windowWidth - RadiusOfBall)
         xdir *= -1;
 
+    glPushMatrix();
     /*  //reset transformation state
         glLoadIdentity();
 
@@ -109,6 +112,8 @@ void Display(void)
     glMultMatrixf(T1);
 
     draw_ball();
+    glPopMatrix();
+    drawLeftPaddle();
     glutPostRedisplay();
 }
 
@@ -131,6 +136,8 @@ void init(void){
     // initial position set to 0,0
     windowHeight = 200.0;
     windowWidth = 160.0;
+    paddleWidth = 5.0;
+    paddleHeight = 50.0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
