@@ -15,6 +15,7 @@ int SPEED = 50;        // speed of timer call back in msecs
 double windowWidth, windowHeight;
 double paddleWidth, paddleHeight;
 double paddleXpos, paddleYpos;
+double paddleSpeed = 9.0;
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
                   0.,1.,0.,0.,\
@@ -54,8 +55,8 @@ void drawLeftPaddle() {
     glBegin(GL_POLYGON);
     glVertex2f(0.0, paddleYpos);
     glVertex2f(paddleWidth, paddleYpos);
-    glVertex2f(paddleWidth, paddleYpos + 30.0);
-    glVertex2f(0.0, paddleYpos + 30.0);
+    glVertex2f(paddleWidth, paddleYpos + paddleHeight);
+    glVertex2f(0.0, paddleYpos + paddleHeight);
     glEnd();
 }
 
@@ -63,8 +64,8 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 'w': // Move the paddle upwards
             paddleYpos += paddleSpeed;
-            if (paddleYpos + 50.0 > windowHeight)
-                paddleYpos = windowHeight - 50;
+            if (paddleYpos + paddleHeight >= windowHeight)
+                paddleYpos = windowHeight - paddleHeight;
             break;
         case 's':
             paddleYpos -= paddleSpeed;
@@ -153,7 +154,8 @@ void init(void){
     windowHeight = 200.0;
     windowWidth = 160.0;
     paddleWidth = 5.0;
-    paddleHeight = 50.0;
+    paddleHeight = 30.0;
+    paddleYpos = 60.0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
@@ -176,6 +178,7 @@ int main(int argc, char* argv[])
     glutReshapeFunc(reshape);
     // Enter the GLUT event processing loop.
     // Won't return until the program is finished.
+    glutKeyboardFunc(keyboard);
     glutMainLoop();
 
     return 1;
