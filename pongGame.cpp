@@ -15,6 +15,7 @@ int SPEED = 50;        // speed of timer call back in msecs
 double windowWidth, windowHeight;
 double paddleWidth, paddleHeight;
 double paddleXpos, leftPaddleYpos;
+double rightPaddleXpos, rightPaddleYpos;
 double paddleSpeed = 9.0;
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
@@ -161,6 +162,7 @@ void init(void){
     paddleWidth = 5.0;
     paddleHeight = 30.0;
     leftPaddleYpos = 60.0;
+    rightPaddleYpos = 60.0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
