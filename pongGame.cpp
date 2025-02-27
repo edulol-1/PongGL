@@ -7,7 +7,6 @@
 
 #define PI 3.1415926535898
 
-
 double xpos, ypos, ydir, xdir;         // x and y position for house to be drawn
 double sx, sy, squash;          // xy scale factors
 double rot, rdir;             // rotation
@@ -104,12 +103,18 @@ void Display(void)
         ydir *= -1;
 
     // Left paddle collision
-    if ((xpos <= RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
+    if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
             && ypos >= leftPaddleYpos)
         xdir *= -1;
 
     if (xpos == windowWidth - RadiusOfBall)
         xdir = -xdir;
+
+    if (xpos <= RadiusOfBall) {
+        xpos = windowWidth * 0.5;
+        ypos = windowHeight * 0.5;
+        ydir = -1;
+    }
 
     glPushMatrix();
     /*  //reset transformation state
