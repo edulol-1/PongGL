@@ -14,7 +14,7 @@ double rot, rdir;             // rotation
 int SPEED = 50;        // speed of timer call back in msecs
 double windowWidth, windowHeight;
 double paddleWidth, paddleHeight;
-double paddleXpos, paddleYpos;
+double paddleXpos, leftPaddleYpos;
 double paddleSpeed = 9.0;
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
@@ -53,24 +53,24 @@ void draw_ball() {
 void drawLeftPaddle() {
     glColor3f(0.0, 0.0, 0.0);
     glBegin(GL_POLYGON);
-    glVertex2f(0.0, paddleYpos);
-    glVertex2f(paddleWidth, paddleYpos);
-    glVertex2f(paddleWidth, paddleYpos + paddleHeight);
-    glVertex2f(0.0, paddleYpos + paddleHeight);
+    glVertex2f(0.0, leftPaddleYpos);
+    glVertex2f(paddleWidth, leftPaddleYpos);
+    glVertex2f(paddleWidth, leftPaddleYpos+ paddleHeight);
+    glVertex2f(0.0, leftPaddleYpos + paddleHeight);
     glEnd();
 }
 
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 'w': // Move the paddle upwards
-            paddleYpos += paddleSpeed;
-            if (paddleYpos + paddleHeight >= windowHeight)
-                paddleYpos = windowHeight - paddleHeight;
+            leftPaddleYpos += paddleSpeed;
+            if (leftPaddleYpos + paddleHeight >= windowHeight)
+                leftPaddleYpos = windowHeight - paddleHeight;
             break;
         case 's':
-            paddleYpos -= paddleSpeed;
-            if (paddleYpos < 0.0)
-                paddleYpos = 0.0;
+            leftPaddleYpos -= paddleSpeed;
+            if (leftPaddleYpos < 0.0)
+                leftPaddleYpos = 0.0;
             break;
     }
     glutPostRedisplay();
@@ -93,8 +93,8 @@ void Display(void)
         ydir *= -1;
 
     // Left paddle collision
-    if ((xpos <= RadiusOfBall + paddleWidth) && ypos <= paddleYpos + paddleHeight
-            && ypos >= paddleYpos)
+    if ((xpos <= RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
+            && ypos >= leftPaddleYpos)
         xdir *= -1;
 
     if (xpos == windowWidth - RadiusOfBall)
@@ -160,7 +160,7 @@ void init(void){
     windowWidth = 160.0;
     paddleWidth = 5.0;
     paddleHeight = 30.0;
-    paddleYpos = 60.0;
+    leftPaddleYpos = 60.0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
