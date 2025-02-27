@@ -61,6 +61,16 @@ void drawLeftPaddle() {
     glEnd();
 }
 
+void drawRightPaddle() {
+    glColor3f(0.0, 0.0, 0.0);
+    glBegin(GL_POLYGON);
+    glVertex2f(windowWidth, rightPaddleYpos);
+    glVertex2f(windowWidth - paddleWidth, rightPaddleYpos);
+    glVertex2f(windowWidth - paddleWidth, rightPaddleYpos + paddleHeight);
+    glVertex2f(windowWidth, rightPaddleYpos + paddleHeight);
+    glEnd();
+}
+
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 'w': // Move the paddle upwards
@@ -137,6 +147,7 @@ void Display(void)
     draw_ball();
     glPopMatrix();
     drawLeftPaddle();
+    drawRightPaddle();
     glutPostRedisplay();
 }
 
