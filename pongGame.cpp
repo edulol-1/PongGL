@@ -4,6 +4,7 @@
 #include <GL/glut.h> //the glut file for windows operations
                      // it also includes gl.h and glu.h for the openGL library calls
 #include <math.h>
+#include <bits/stdc++.h>
 
 #define PI 3.1415926535898
 
@@ -15,7 +16,9 @@ double windowWidth, windowHeight;
 double paddleWidth, paddleHeight;
 double paddleXpos, leftPaddleYpos;
 double rightPaddleXpos, rightPaddleYpos;
-double paddleSpeed = 9.0;
+double paddleSpeed = 3.0;
+std::map<int, bool> keysPressed = {{'w', false}, {'s', false},\
+                                   {'o', false}, {'l', false}};
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
                   0.,1.,0.,0.,\
@@ -43,7 +46,7 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
     glEnd();
 }
 
-GLfloat RadiusOfBall = 5.;
+GLfloat RadiusOfBall = 4.;
 // Draw the ball, centered at the origin
 void draw_ball() {
     glColor3f(0.6,0.0,0.7);
@@ -71,17 +74,36 @@ void drawRightPaddle() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    switch (key) {
-        case 'w': // Move the paddle upwards
-            leftPaddleYpos += paddleSpeed;
-            if (leftPaddleYpos + paddleHeight >= windowHeight)
-                leftPaddleYpos = windowHeight - paddleHeight;
-            break;
-        case 's':
-            leftPaddleYpos -= paddleSpeed;
-            if (leftPaddleYpos < 0.0)
-                leftPaddleYpos = 0.0;
-            break;
+    keysPressed[key] = true;
+}
+
+void keyboardUp(unsigned char key, int x, int y) {
+    keysPressed[key] = false;
+}
+
+void updatePaddles() {
+    if (keysPressed['w']) {
+        leftPaddleYpos += paddleSpeed;
+        if (leftPaddleYpos + paddleHeight >= windowHeight)
+            leftPaddleYpos = windowHeight - paddleHeight;
+    }
+
+    if (keysPressed['s']) {
+        leftPaddleYpos -= paddleSpeed;
+        if (leftPaddleYpos < 0.0)
+            leftPaddleYpos = 0.0;
+    }
+
+    if (keysPressed['o']) {
+        rightPaddleYpos += paddleSpeed;
+        if (rightPaddleYpos + paddleHeight >= windowHeight)
+            rightPaddleYpos = windowHeight - paddleHeight;
+    }
+
+    if (keysPressed['l']) {
+        rightPaddleYpos -= paddleSpeed;
+        if (rightPaddleYpos < 0.0)
+            rightPaddleYpos = 0.0;
     }
     glutPostRedisplay();
 }
@@ -90,6 +112,9 @@ void Display(void)
 {
     // swap the font and back buffers (double buffering)
     glutSwapBuffers();
+
+    // Check and update paddles
+    updatePaddles();
 
     //clear all pixels with the specified clear color
     glClear(GL_COLOR_BUFFER_BIT);
@@ -104,16 +129,27 @@ void Display(void)
 
     // Left paddle collision
     if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
-            && ypos >= leftPaddleYpos)
+        && ypos >= leftPaddleYpos)
         xdir *= -1;
 
-    if (xpos == windowWidth - RadiusOfBall)
-        xdir = -xdir;
+    if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
+        && ypos >= rightPaddleYpos)
+        xdir *= -1;
 
+    // if (xpos == windowWidth - RadiusOfBall)
+    //     xdir = -xdir;
+
+    // Left wall collision
     if (xpos <= RadiusOfBall) {
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
+    }
+
+    if (xpos >= windowWidth - RadiusOfBall) {
+        xpos = windowWidth * 0.5;
+        ypos = windowHeight * 0.5;
+        ydir = 1;
     }
 
     glPushMatrix();
@@ -201,6 +237,7 @@ int main(int argc, char* argv[])
     glutReshapeFunc(reshape);
     // Enter the GLUT event processing loop.
     // Won't return until the program is finished.
+    glutKeyboardUpFunc(keyboardUp);
     glutKeyboardFunc(keyboard);
     glutMainLoop();
 
