@@ -132,12 +132,10 @@ void Display(void)
         && ypos >= leftPaddleYpos)
         xdir *= -1;
 
+    // Right paddle collision
     if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
         && ypos >= rightPaddleYpos)
         xdir *= -1;
-
-    // if (xpos == windowWidth - RadiusOfBall)
-    //     xdir = -xdir;
 
     // Left wall collision
     if (xpos <= RadiusOfBall) {
@@ -146,10 +144,11 @@ void Display(void)
         ydir = -1;
     }
 
+    // Right wall collision
     if (xpos >= windowWidth - RadiusOfBall) {
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
-        ydir = 1;
+        ydir = -1;
     }
 
     glPushMatrix();
