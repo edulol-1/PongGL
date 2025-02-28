@@ -7,7 +7,12 @@ OpenGL installation:
 sudo apt install freeglut3-dev
 ```
 
+For compilation:
+```
+g++ -o openGL.out pongGame.cpp -lGL -lglut -lGLU
+```
+
 For execution:
 ```
-g++ -o openGL.out Example2_4.cpp -lGL -lglut -lGLU
+./openGL.out &
 ```
