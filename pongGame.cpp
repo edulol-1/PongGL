@@ -128,12 +128,12 @@ void Display(void)
         ydir *= -1;
 
     // Left paddle collision
-    if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
+    if ((xpos <= RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
         && ypos >= leftPaddleYpos)
         xdir *= -1;
 
     // Right paddle collision
-    if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
+    if ((xpos >= windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
         && ypos >= rightPaddleYpos)
         xdir *= -1;
 
@@ -208,7 +208,7 @@ void init(void){
     //set the clear color to be white
     glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
     // initial position set to 0,0
-    windowHeight = 200.0;
+    windowHeight = 250;
     windowWidth = 160.0;
     paddleWidth = 5.0;
     paddleHeight = 30.0;
