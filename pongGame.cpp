@@ -17,6 +17,7 @@ double paddleWidth, paddleHeight;
 double paddleXpos, leftPaddleYpos;
 double rightPaddleXpos, rightPaddleYpos;
 double paddleSpeed = 3.0;
+int leftPlayerScore, rightPlayerScore;
 std::map<int, bool> keysPressed = {{'w', false}, {'s', false},\
                                    {'o', false}, {'l', false}};
 
@@ -51,6 +52,14 @@ GLfloat RadiusOfBall = 4.;
 void draw_ball() {
     glColor3f(0.6,0.0,0.7);
     MyCircle2f(0.,0.,RadiusOfBall);
+}
+
+void drawScore(const char *score, float x, float y) {
+    glRasterPos2f(x, y);
+    while (*score) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *score);
+        score++;
+    }
 }
 
 void drawLeftPaddle() {
@@ -142,6 +151,7 @@ void Display(void)
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
+        rightPlayerScore++;
     }
 
     // Right wall collision
@@ -149,6 +159,7 @@ void Display(void)
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
+        leftPlayerScore++;
     }
 
     glPushMatrix();
@@ -188,6 +199,11 @@ void Display(void)
     glPopMatrix();
     drawLeftPaddle();
     drawRightPaddle();
+    char scoreText[50];
+    sprintf(scoreText, "%d", leftPlayerScore);
+    drawScore(scoreText, windowWidth * 0.25, windowHeight - 20);
+    sprintf(scoreText, "%d", rightPlayerScore);
+    drawScore(scoreText, windowWidth * 0.75, windowHeight - 20);
     glutPostRedisplay();
 }
 
@@ -214,6 +230,7 @@ void init(void){
     paddleHeight = 30.0;
     leftPaddleYpos = 60.0;
     rightPaddleYpos = 60.0;
+    leftPlayerScore = 0, rightPlayerScore = 0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
