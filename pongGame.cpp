@@ -50,7 +50,7 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
 GLfloat RadiusOfBall = 4.;
 // Draw the ball, centered at the origin
 void draw_ball() {
-    glColor3f(0.6,0.0,0.7);
+    glColor3f(0.6f,0.0f,0.7f);
     MyCircle2f(0.,0.,RadiusOfBall);
 }
 
@@ -63,7 +63,7 @@ void drawScore(const char *score, float x, float y) {
 }
 
 void drawLeftPaddle() {
-    glColor3f(0.0, 0.0, 0.0);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_POLYGON);
     glVertex2f(0.0, leftPaddleYpos);
     glVertex2f(paddleWidth, leftPaddleYpos);
@@ -73,7 +73,7 @@ void drawLeftPaddle() {
 }
 
 void drawRightPaddle() {
-    glColor3f(0.0, 0.0, 0.0);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_POLYGON);
     glVertex2f(windowWidth, rightPaddleYpos);
     glVertex2f(windowWidth - paddleWidth, rightPaddleYpos);
@@ -118,7 +118,7 @@ void updatePaddles() {
 }
 
 void drawCenterLine() {
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glLineWidth(2.0f);
     glEnable(GL_LINE_STIPPLE);
     glLineStipple(2, 0xAAAA);
@@ -235,7 +235,7 @@ void reshape (int w, int h)
 
 void init(void){
     //set the clear color to be white
-    glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     // initial position set to 0,0
     windowHeight = 250;
     windowWidth = 160.0;
