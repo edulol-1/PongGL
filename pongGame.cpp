@@ -117,6 +117,18 @@ void updatePaddles() {
     glutPostRedisplay();
 }
 
+void drawCenterLine() {
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glLineWidth(2.0f);
+    glEnable(GL_LINE_STIPPLE);
+    glLineStipple(2, 0xAAAA);
+    glBegin(GL_LINES);
+    glVertex2f(windowWidth * 0.5, 0.0);
+    glVertex2f(windowWidth * 0.5, windowHeight);
+    glEnd();
+    glDisable(GL_LINE_STIPPLE);
+}
+
 void Display(void)
 {
     // swap the font and back buffers (double buffering)
@@ -199,7 +211,8 @@ void Display(void)
     glPopMatrix();
     drawLeftPaddle();
     drawRightPaddle();
-    char scoreText[50];
+    drawCenterLine();
+    char scoreText[20];
     sprintf(scoreText, "%d", leftPlayerScore);
     drawScore(scoreText, windowWidth * 0.25, windowHeight - 20);
     sprintf(scoreText, "%d", rightPlayerScore);
