@@ -118,13 +118,13 @@ void Display(void)
 
     //clear all pixels with the specified clear color
     glClear(GL_COLOR_BUFFER_BIT);
-    // 160 is max X value in our world
 
+    // Position of the ball
     ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
     xpos = xpos + xdir * 0.5 - (1.0 - sx) * RadiusOfBall;
 
     // Vertical wall collision
-    if (ypos == windowHeight - RadiusOfBall || ypos < RadiusOfBall)
+    if (ypos == windowHeight - RadiusOfBall || ypos == RadiusOfBall)
         ydir *= -1;
 
     // Left paddle collision
