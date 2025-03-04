@@ -149,12 +149,12 @@ void Display(void)
         ydir *= -1;
 
     // Left paddle collision
-    if ((xpos <= RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
+    if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
         && ypos >= leftPaddleYpos)
         xdir *= -1;
 
     // Right paddle collision
-    if ((xpos >= windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
+    if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
         && ypos >= rightPaddleYpos)
         xdir *= -1;
 
