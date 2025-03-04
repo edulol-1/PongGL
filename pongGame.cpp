@@ -5,6 +5,7 @@
                      // it also includes gl.h and glu.h for the openGL library calls
 #include <math.h>
 #include <bits/stdc++.h>
+#include <string>
 
 #define PI 3.1415926535898
 
@@ -129,6 +130,14 @@ void drawCenterLine() {
     glDisable(GL_LINE_STIPPLE);
 }
 
+void checkScore(const int score, const int player) {
+    if (score == 5) {
+        std::string name = (player == 0)? "Left player": "Right player";
+        std::cout << name << " won the game!!" << "\n";
+        exit(1);
+    }
+}
+
 void Display(void)
 {
     // swap the font and back buffers (double buffering)
@@ -164,6 +173,7 @@ void Display(void)
         ypos = windowHeight * 0.5;
         ydir = -1;
         rightPlayerScore++;
+        checkScore(rightPlayerScore, 1);
     }
 
     // Right wall collision
@@ -172,6 +182,7 @@ void Display(void)
         ypos = windowHeight * 0.5;
         ydir = -1;
         leftPlayerScore++;
+        checkScore(leftPlayerScore, 0);
     }
 
     glPushMatrix();
