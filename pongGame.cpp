@@ -1,4 +1,4 @@
-//Example2_4.cpp : A bouncing ball
+//pongGame.cpp : A bouncing ball minigame
 
 //#include <windows.h> //the windows include file, required by all windows applications
 #include <GL/glut.h> //the glut file for windows operations
@@ -19,7 +19,7 @@ double paddleXpos, leftPaddleYpos;
 double rightPaddleXpos, rightPaddleYpos;
 double paddleSpeed = 3.0;
 int leftPlayerScore, rightPlayerScore;
-std::map<int, bool> keysPressed = {{'w', false}, {'s', false},\
+std::map<int, bool> keyPressed = {{'w', false}, {'s', false},\
                                    {'o', false}, {'l', false}};
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
@@ -84,33 +84,33 @@ void drawRightPaddle() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    keysPressed[key] = true;
+    keyPressed[key] = true;
 }
 
 void keyboardUp(unsigned char key, int x, int y) {
-    keysPressed[key] = false;
+    keyPressed[key] = false;
 }
 
 void updatePaddles() {
-    if (keysPressed['w']) {
+    if (keyPressed['w']) {
         leftPaddleYpos += paddleSpeed;
         if (leftPaddleYpos + paddleHeight >= windowHeight)
             leftPaddleYpos = windowHeight - paddleHeight;
     }
 
-    if (keysPressed['s']) {
+    if (keyPressed['s']) {
         leftPaddleYpos -= paddleSpeed;
         if (leftPaddleYpos < 0.0)
             leftPaddleYpos = 0.0;
     }
 
-    if (keysPressed['o']) {
+    if (keyPressed['o']) {
         rightPaddleYpos += paddleSpeed;
         if (rightPaddleYpos + paddleHeight >= windowHeight)
             rightPaddleYpos = windowHeight - paddleHeight;
     }
 
-    if (keysPressed['l']) {
+    if (keyPressed['l']) {
         rightPaddleYpos -= paddleSpeed;
         if (rightPaddleYpos < 0.0)
             rightPaddleYpos = 0.0;
@@ -159,13 +159,24 @@ void Display(void)
 
     // Left paddle collision
     if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
-        && ypos >= leftPaddleYpos)
+        && ypos >= leftPaddleYpos) {
         xdir *= -1;
+        if (keyPressed['w'])
+            ydir = 1;
+        if (keyPressed['s'])
+            ydir = -1;
+    }
 
     // Right paddle collision
     if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
-        && ypos >= rightPaddleYpos)
+        && ypos >= rightPaddleYpos) {
         xdir *= -1;
+
+        if (keyPressed['o'])
+            ydir = 1;
+        if (keyPressed['l'])
+            ydir = -1;
+    }
 
     // Left wall collision
     if (xpos <= RadiusOfBall) {
