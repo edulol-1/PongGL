@@ -48,7 +48,7 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
     glEnd();
 }
 
-GLfloat RadiusOfBall = 4.;
+GLfloat RadiusOfBall = 3.;
 // Draw the ball, centered at the origin
 void draw_ball() {
     glColor3f(0.6f,0.0f,0.7f);
@@ -158,7 +158,7 @@ void Display(void)
         ydir *= -1;
 
     // Left paddle collision
-    if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
+    if ((xpos == RadiusOfBall + paddleWidth * 1.2) && ypos <= leftPaddleYpos + paddleHeight
         && ypos >= leftPaddleYpos) {
         xdir *= -1;
         if (keyPressed['w'])
@@ -168,10 +168,9 @@ void Display(void)
     }
 
     // Right paddle collision
-    if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
+    if ((xpos == windowWidth - paddleWidth * 1.2 - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
         && ypos >= rightPaddleYpos) {
         xdir *= -1;
-
         if (keyPressed['o'])
             ydir = 1;
         if (keyPressed['l'])
