@@ -138,6 +138,22 @@ void checkScore(const int score, const int player) {
     }
 }
 
+bool collidedLeft() {
+    bool collisionX = paddleWidth >= xpos - RadiusOfBall &&\
+        xpos >= 0.0;
+    bool collisionY = leftPaddleYpos + paddleHeight >= ypos - RadiusOfBall &&\
+        ypos >= leftPaddleYpos;
+    return collisionY && collisionX;
+}
+
+bool collidedRight() {
+    bool collisionX = windowWidth >= xpos - RadiusOfBall &&\
+        xpos + RadiusOfBall >= windowWidth - RadiusOfBall;
+    bool collisionY = rightPaddleYpos + paddleHeight >= ypos - RadiusOfBall &&\
+        ypos + RadiusOfBall >= rightPaddleYpos;
+    return collisionY && collisionX;
+}
+
 void Display(void)
 {
     // swap the font and back buffers (double buffering)
@@ -157,28 +173,32 @@ void Display(void)
     if (ypos == windowHeight - RadiusOfBall || ypos == RadiusOfBall)
         ydir *= -1;
 
-    // Left paddle collision
-    if ((xpos == RadiusOfBall + paddleWidth * 1.2) && ypos <= leftPaddleYpos + paddleHeight
-        && ypos >= leftPaddleYpos) {
-        xdir *= -1;
-        if (keyPressed['w'])
-            ydir = 1;
-        if (keyPressed['s'])
+    if (collidedLeft()) {
+        xdir = 1;
+        if (ypos - RadiusOfBall <= leftPaddleYpos &&\
+            ypos > RadiusOfBall) {
             ydir = -1;
+        }
+        if (ypos + RadiusOfBall >= leftPaddleYpos + paddleHeight &&\
+            ypos < windowHeight - RadiusOfBall) {
+            ydir = 1;
+        }
+        std::cout << "Left paddle collision!!" << "\n";
     }
 
-    // Right paddle collision
-    if ((xpos == windowWidth - paddleWidth * 1.2 - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
-        && ypos >= rightPaddleYpos) {
-        xdir *= -1;
-        if (keyPressed['o'])
-            ydir = 1;
-        if (keyPressed['l'])
+    if (collidedRight()) {
+        xdir = -1;
+        if (ypos - RadiusOfBall <= rightPaddleYpos &&\
+            ypos > RadiusOfBall)
             ydir = -1;
+        if (ypos + RadiusOfBall >= rightPaddleYpos + paddleHeight &&\
+            ypos < windowHeight - RadiusOfBall)
+            ydir = 1;
+        std::cout << "Right paddle collision!!" << "\n";
     }
 
     // Left wall collision
-    if (xpos <= RadiusOfBall) {
+    if (xpos <= RadiusOfBall * 0.6) {
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
@@ -187,7 +207,7 @@ void Display(void)
     }
 
     // Right wall collision
-    if (xpos >= windowWidth - RadiusOfBall) {
+    if (xpos >= windowWidth - 0.6 * RadiusOfBall) {
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
