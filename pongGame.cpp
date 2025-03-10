@@ -216,21 +216,6 @@ void Display(void)
     }
 
     glPushMatrix();
-    /*  //reset transformation state
-        glLoadIdentity();
-
-        // apply translation
-        glTranslatef(xpos,ypos, 0.);
-
-        // Translate ball back to center
-        glTranslatef(0.,-RadiusOfBall, 0.);
-        // Scale the ball about its bottom
-        glScalef(sx,sy, 1.);
-        // Translate ball up so bottom is at the origin
-        glTranslatef(0.,RadiusOfBall, 0.);
-        // draw the ball
-        draw_ball();
-    */
 
     //Translate the bouncing ball to its new position
     T[12]= xpos;
@@ -305,8 +290,6 @@ int main(int argc, char* argv[])
     glutDisplayFunc(Display);
     // Register the reshape callback function to handle window resizing.
     glutReshapeFunc(reshape);
-    // Enter the GLUT event processing loop.
-    // Won't return until the program is finished.
     glutKeyboardUpFunc(keyboardUp);
     glutKeyboardFunc(keyboard);
     glutMainLoop();
