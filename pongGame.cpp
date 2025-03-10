@@ -1,10 +1,11 @@
-//Example2_4.cpp : A bouncing ball
+//pongGame.cpp : A bouncing ball minigame
 
 //#include <windows.h> //the windows include file, required by all windows applications
 #include <GL/glut.h> //the glut file for windows operations
                      // it also includes gl.h and glu.h for the openGL library calls
 #include <math.h>
 #include <bits/stdc++.h>
+#include <string>
 
 #define PI 3.1415926535898
 
@@ -17,7 +18,8 @@ double paddleWidth, paddleHeight;
 double paddleXpos, leftPaddleYpos;
 double rightPaddleXpos, rightPaddleYpos;
 double paddleSpeed = 3.0;
-std::map<int, bool> keysPressed = {{'w', false}, {'s', false},\
+int leftPlayerScore, rightPlayerScore;
+std::map<int, bool> keyPressed = {{'w', false}, {'s', false},\
                                    {'o', false}, {'l', false}};
 
 GLfloat T1[16] = {1.,0.,0.,0.,\
@@ -46,15 +48,23 @@ void MyCircle2f(GLfloat centerx, GLfloat centery, GLfloat radius){
     glEnd();
 }
 
-GLfloat RadiusOfBall = 4.;
+GLfloat RadiusOfBall = 3.;
 // Draw the ball, centered at the origin
 void draw_ball() {
-    glColor3f(0.6,0.0,0.7);
+    glColor3f(0.6f,0.0f,0.7f);
     MyCircle2f(0.,0.,RadiusOfBall);
 }
 
+void drawScore(const char *score, float x, float y) {
+    glRasterPos2f(x, y);
+    while (*score) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *score);
+        score++;
+    }
+}
+
 void drawLeftPaddle() {
-    glColor3f(0.0, 0.0, 0.0);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_POLYGON);
     glVertex2f(0.0, leftPaddleYpos);
     glVertex2f(paddleWidth, leftPaddleYpos);
@@ -64,7 +74,7 @@ void drawLeftPaddle() {
 }
 
 void drawRightPaddle() {
-    glColor3f(0.0, 0.0, 0.0);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_POLYGON);
     glVertex2f(windowWidth, rightPaddleYpos);
     glVertex2f(windowWidth - paddleWidth, rightPaddleYpos);
@@ -74,38 +84,74 @@ void drawRightPaddle() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    keysPressed[key] = true;
+    keyPressed[key] = true;
 }
 
 void keyboardUp(unsigned char key, int x, int y) {
-    keysPressed[key] = false;
+    keyPressed[key] = false;
 }
 
 void updatePaddles() {
-    if (keysPressed['w']) {
+    if (keyPressed['w']) {
         leftPaddleYpos += paddleSpeed;
         if (leftPaddleYpos + paddleHeight >= windowHeight)
             leftPaddleYpos = windowHeight - paddleHeight;
     }
 
-    if (keysPressed['s']) {
+    if (keyPressed['s']) {
         leftPaddleYpos -= paddleSpeed;
         if (leftPaddleYpos < 0.0)
             leftPaddleYpos = 0.0;
     }
 
-    if (keysPressed['o']) {
+    if (keyPressed['o']) {
         rightPaddleYpos += paddleSpeed;
         if (rightPaddleYpos + paddleHeight >= windowHeight)
             rightPaddleYpos = windowHeight - paddleHeight;
     }
 
-    if (keysPressed['l']) {
+    if (keyPressed['l']) {
         rightPaddleYpos -= paddleSpeed;
         if (rightPaddleYpos < 0.0)
             rightPaddleYpos = 0.0;
     }
     glutPostRedisplay();
+}
+
+void drawCenterLine() {
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glLineWidth(2.0f);
+    glEnable(GL_LINE_STIPPLE);
+    glLineStipple(2, 0xAAAA);
+    glBegin(GL_LINES);
+    glVertex2f(windowWidth * 0.5, 0.0);
+    glVertex2f(windowWidth * 0.5, windowHeight);
+    glEnd();
+    glDisable(GL_LINE_STIPPLE);
+}
+
+void checkScore(const int score, const int player) {
+    if (score == 5) {
+        std::string name = (player == 0)? "Left player": "Right player";
+        std::cout << name << " won the game!!" << "\n";
+        exit(1);
+    }
+}
+
+bool collidedLeft() {
+    bool collisionX = paddleWidth >= xpos - RadiusOfBall &&\
+        xpos >= 0.0;
+    bool collisionY = leftPaddleYpos + paddleHeight >= ypos - RadiusOfBall &&\
+        ypos >= leftPaddleYpos;
+    return collisionY && collisionX;
+}
+
+bool collidedRight() {
+    bool collisionX = windowWidth >= xpos - RadiusOfBall &&\
+        xpos + RadiusOfBall >= windowWidth - RadiusOfBall;
+    bool collisionY = rightPaddleYpos + paddleHeight >= ypos - RadiusOfBall &&\
+        ypos + RadiusOfBall >= rightPaddleYpos;
+    return collisionY && collisionX;
 }
 
 void Display(void)
@@ -118,55 +164,58 @@ void Display(void)
 
     //clear all pixels with the specified clear color
     glClear(GL_COLOR_BUFFER_BIT);
-    // 160 is max X value in our world
 
+    // Position of the ball
     ypos = ypos + ydir * 0.5 - (1. - sy) * RadiusOfBall;
     xpos = xpos + xdir * 0.5 - (1.0 - sx) * RadiusOfBall;
 
     // Vertical wall collision
-    if (ypos == windowHeight - RadiusOfBall || ypos < RadiusOfBall)
+    if (ypos == windowHeight - RadiusOfBall || ypos == RadiusOfBall)
         ydir *= -1;
 
-    // Left paddle collision
-    if ((xpos == RadiusOfBall + paddleWidth) && ypos <= leftPaddleYpos + paddleHeight
-        && ypos >= leftPaddleYpos)
-        xdir *= -1;
+    if (collidedLeft()) {
+        xdir = 1;
+        if (ypos - RadiusOfBall <= leftPaddleYpos &&\
+            ypos > RadiusOfBall) {
+            ydir = -1;
+        }
+        if (ypos + RadiusOfBall >= leftPaddleYpos + paddleHeight &&\
+            ypos < windowHeight - RadiusOfBall) {
+            ydir = 1;
+        }
+        std::cout << "Left paddle collision!!" << "\n";
+    }
 
-    // Right paddle collision
-    if ((xpos == windowWidth - paddleWidth - RadiusOfBall) && ypos <= rightPaddleYpos + paddleHeight
-        && ypos >= rightPaddleYpos)
-        xdir *= -1;
+    if (collidedRight()) {
+        xdir = -1;
+        if (ypos - RadiusOfBall <= rightPaddleYpos &&\
+            ypos > RadiusOfBall)
+            ydir = -1;
+        if (ypos + RadiusOfBall >= rightPaddleYpos + paddleHeight &&\
+            ypos < windowHeight - RadiusOfBall)
+            ydir = 1;
+        std::cout << "Right paddle collision!!" << "\n";
+    }
 
     // Left wall collision
-    if (xpos <= RadiusOfBall) {
+    if (xpos <= RadiusOfBall * 0.6) {
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
+        rightPlayerScore++;
+        checkScore(rightPlayerScore, 1);
     }
 
     // Right wall collision
-    if (xpos >= windowWidth - RadiusOfBall) {
+    if (xpos >= windowWidth - 0.6 * RadiusOfBall) {
         xpos = windowWidth * 0.5;
         ypos = windowHeight * 0.5;
         ydir = -1;
+        leftPlayerScore++;
+        checkScore(leftPlayerScore, 0);
     }
 
     glPushMatrix();
-    /*  //reset transformation state
-        glLoadIdentity();
-
-        // apply translation
-        glTranslatef(xpos,ypos, 0.);
-
-        // Translate ball back to center
-        glTranslatef(0.,-RadiusOfBall, 0.);
-        // Scale the ball about its bottom
-        glScalef(sx,sy, 1.);
-        // Translate ball up so bottom is at the origin
-        glTranslatef(0.,RadiusOfBall, 0.);
-        // draw the ball
-        draw_ball();
-    */
 
     //Translate the bouncing ball to its new position
     T[12]= xpos;
@@ -188,6 +237,12 @@ void Display(void)
     glPopMatrix();
     drawLeftPaddle();
     drawRightPaddle();
+    drawCenterLine();
+    char scoreText[20];
+    sprintf(scoreText, "%d", leftPlayerScore);
+    drawScore(scoreText, windowWidth * 0.25, windowHeight - 20);
+    sprintf(scoreText, "%d", rightPlayerScore);
+    drawScore(scoreText, windowWidth * 0.75, windowHeight - 20);
     glutPostRedisplay();
 }
 
@@ -206,14 +261,15 @@ void reshape (int w, int h)
 
 void init(void){
     //set the clear color to be white
-    glClearColor(0.0f, 0.9f, 0.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     // initial position set to 0,0
-    windowHeight = 200.0;
+    windowHeight = 250;
     windowWidth = 160.0;
     paddleWidth = 5.0;
     paddleHeight = 30.0;
     leftPaddleYpos = 60.0;
     rightPaddleYpos = 60.0;
+    leftPlayerScore = 0, rightPlayerScore = 0;
     xpos = windowWidth * 0.5; ypos = RadiusOfBall; xdir = 1; ydir = 1;
     sx = 1.; sy = 1.; squash = 0.9;
     rot = 0;
@@ -234,8 +290,6 @@ int main(int argc, char* argv[])
     glutDisplayFunc(Display);
     // Register the reshape callback function to handle window resizing.
     glutReshapeFunc(reshape);
-    // Enter the GLUT event processing loop.
-    // Won't return until the program is finished.
     glutKeyboardUpFunc(keyboardUp);
     glutKeyboardFunc(keyboard);
     glutMainLoop();
