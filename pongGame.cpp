@@ -175,26 +175,26 @@ void Display(void)
 
     if (collidedLeft()) {
         xdir = 1;
-        if (ypos - RadiusOfBall <= leftPaddleYpos &&\
-            ypos > RadiusOfBall) {
+        if (ypos - RadiusOfBall <= leftPaddleYpos - RadiusOfBall * 0.9 &&\
+            ypos > RadiusOfBall &&\
+            xpos < paddleWidth) {
             ydir = -1;
         }
-        if (ypos + RadiusOfBall >= leftPaddleYpos + paddleHeight &&\
-            ypos < windowHeight - RadiusOfBall) {
+        if (ypos + RadiusOfBall >= leftPaddleYpos + paddleHeight + RadiusOfBall * 0.9 &&\
+            ypos < windowHeight - RadiusOfBall &&\
+            xpos < paddleWidth) {
             ydir = 1;
         }
-        std::cout << "Left paddle collision!!" << "\n";
     }
 
     if (collidedRight()) {
         xdir = -1;
-        if (ypos - RadiusOfBall <= rightPaddleYpos &&\
+        if (ypos - RadiusOfBall <= rightPaddleYpos - RadiusOfBall * 0.9 &&\
             ypos > RadiusOfBall)
             ydir = -1;
-        if (ypos + RadiusOfBall >= rightPaddleYpos + paddleHeight &&\
+        if (ypos + RadiusOfBall >= rightPaddleYpos + paddleHeight  + RadiusOfBall * 0.9 &&\
             ypos < windowHeight - RadiusOfBall)
             ydir = 1;
-        std::cout << "Right paddle collision!!" << "\n";
     }
 
     // Left wall collision
